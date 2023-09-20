@@ -1,0 +1,4 @@
+name: LaserTagged
+version: '${version}'
+main: com.th7bo.lasertagged.LaserTagged
+api-version: '1.20'
