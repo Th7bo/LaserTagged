@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.9.20-Beta'
     id("xyz.jpenilla.run-paper") version "2.1.0"
+    id('com.github.johnrengelman.shadow') version '7.1.2'
 }
 
 group = 'com.th7bo'
@@ -28,21 +29,28 @@ tasks {
     }
 }
 
+build.dependsOn shadowJar
+        shadowJar {
+            dependencies {
+                include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+                include(dependency("org.mariadb.jdbc:mariadb-java-client:3.1.2"))
+                include(dependency("fr.mrmicky:fastboard:2.0.0"))
+            }
+            relocate 'fr.mrmicky.fastboard', 'com.th7bo.lasertagged.fastboard'
+        }
+
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20-Beta"
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.1.2")
 
     compileOnly 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
-
-    implementation "com.google.code.gson:gson:2.8.0"
-    implementation "com.google.guava:guava:11.0.2"
-    api "org.mongodb:mongodb-driver:3.12.11"
-    api "org.apache.commons:commons-lang3:3.5"
-    api "org.apache.commons:commons-io:1.3.2"
+    implementation 'fr.mrmicky:fastboard:2.0.0'
 
 }
 
@@ -65,7 +73,7 @@ tasks.withType(JavaCompile).configureEach {
 processResources {
     def props = [version: version]
     inputs.properties props
-    filteringCharset 'UTF-8'
+            filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
     }
