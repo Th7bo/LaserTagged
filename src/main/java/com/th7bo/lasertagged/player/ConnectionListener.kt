@@ -56,6 +56,8 @@ class ConnectionListener : Listener {
         val player: Player = event.player
 
         LaserTagged.instance.boards[player.uniqueId]?.delete()
+
+        player.removeMetadata("team", LaserTagged.instance)
     }
 
     init {

@@ -51,6 +51,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
     implementation 'fr.mrmicky:fastboard:2.0.0'
+    compileOnly 'me.clip:placeholderapi:2.11.3'
 
 }
 

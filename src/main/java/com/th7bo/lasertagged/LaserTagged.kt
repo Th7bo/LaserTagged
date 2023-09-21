@@ -2,8 +2,10 @@ package com.th7bo.lasertagged
 
 import com.th7bo.lasertagged.commands.TestingCommand
 import com.th7bo.lasertagged.database.DatabaseManager
+import com.th7bo.lasertagged.listeners.GunShootEvent
 import com.th7bo.lasertagged.player.ConnectionListener
 import com.th7bo.lasertagged.utils.DesignFeatures
+import com.th7bo.lasertagged.utils.Placeholders
 import fr.mrmicky.fastboard.FastBoard
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -30,10 +32,16 @@ class LaserTagged : JavaPlugin() {
         }
         enableListeners()
         enableCommands()
+        enableFeatures()
     }
 
     private fun enableListeners() {
         ConnectionListener()
+        GunShootEvent()
+    }
+
+    private fun enableFeatures() {
+        Placeholders().register()
         DesignFeatures()
     }
 
