@@ -2,8 +2,11 @@ name: LaserTagged
 version: '${version}'
 main: com.th7bo.lasertagged.LaserTagged
 api-version: '1.20'
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, FastAsyncWorldEdit, LuckPerms, TAB]
 commands:
   testing:
     description: Testing command
+    usage: /<command>
+  changer:
+    description: Change the game mode
     usage: /<command>

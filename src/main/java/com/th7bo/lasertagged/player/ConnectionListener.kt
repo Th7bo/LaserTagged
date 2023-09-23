@@ -4,15 +4,20 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import com.th7bo.lasertagged.LaserTagged
-import com.th7bo.lasertagged.utils.DesignFeatures
+import com.th7bo.lasertagged.arenas.ArenaGamemode
+import com.th7bo.lasertagged.utils.color
 import com.th7bo.lasertagged.utils.playerData
+import com.th7bo.lasertagged.utils.sendColored
 import fr.mrmicky.fastboard.FastBoard
-import net.md_5.bungee.api.ChatColor
+import org.bukkit.Bukkit
+import org.bukkit.GameMode
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.metadata.FixedMetadataValue
 
 
 class ConnectionListener : Listener {
@@ -46,6 +51,25 @@ class ConnectionListener : Listener {
         val board = FastBoard(event.player)
 
         LaserTagged.instance.boards[event.player.uniqueId] = board
+        if (LaserTagged.instance.arenaManager?.currentArena != null) {
+            val gamemode = LaserTagged.instance.arenaManager?.currentArena?.gamemode
+            event.player.gameMode = GameMode.SURVIVAL
+            var team = 1
+            if (gamemode == ArenaGamemode.FFA) {
+                event.player.setMetadata("team", FixedMetadataValue(LaserTagged.instance, 1))
+            } else {
+                team = LaserTagged.instance.arenaManager?.currentArena?.getTeamWithLeastPlayers()!!
+                event.player.setMetadata("team", FixedMetadataValue(LaserTagged.instance, team))
+            }
+            val spawnLocation = LaserTagged.instance.arenaManager?.currentArena?.getRandomSpawn(team)
+            event.player.sendColored("&aYou joined the game! You are on team $team&r!")
+            event.player.setMetadata("safezone", FixedMetadataValue(LaserTagged.instance, true))
+            if (spawnLocation != null) {
+                event.player.teleport(spawnLocation)
+            }
+        } else {
+            event.player.teleport(Location(Bukkit.getWorld("world"), -119.5, 209.0, 14.5, 90.0f, -7.0f))
+        }
     }
 
     @EventHandler
@@ -58,6 +82,7 @@ class ConnectionListener : Listener {
         LaserTagged.instance.boards[player.uniqueId]?.delete()
 
         player.removeMetadata("team", LaserTagged.instance)
+
     }
 
     init {

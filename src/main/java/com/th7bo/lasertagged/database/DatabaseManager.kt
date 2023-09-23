@@ -116,7 +116,6 @@ class DatabaseManager {
                     }
                     val array = JsonArray()
                     val obj: JsonElement = JsonParser.parseString(resultSet.getString("data")?:defaultArray.toString())
-                    println("Player found in database, returning data... $obj")
                     array.add(obj)
                     return array
                 }

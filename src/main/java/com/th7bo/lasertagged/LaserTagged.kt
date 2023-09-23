@@ -1,8 +1,12 @@
 package com.th7bo.lasertagged
 
+import com.th7bo.lasertagged.arenas.ArenaManager
+import com.th7bo.lasertagged.commands.ChangerCommand
 import com.th7bo.lasertagged.commands.TestingCommand
 import com.th7bo.lasertagged.database.DatabaseManager
+import com.th7bo.lasertagged.listeners.DeathEvent
 import com.th7bo.lasertagged.listeners.GunShootEvent
+import com.th7bo.lasertagged.listeners.MoveEvent
 import com.th7bo.lasertagged.player.ConnectionListener
 import com.th7bo.lasertagged.utils.DesignFeatures
 import com.th7bo.lasertagged.utils.Placeholders
@@ -17,6 +21,7 @@ import com.th7bo.lasertagged.utils.playerData
 class LaserTagged : JavaPlugin() {
     val boards: HashMap<UUID, FastBoard> = HashMap<UUID, FastBoard>()
     var databaseManager: DatabaseManager? = null
+    var arenaManager: ArenaManager? = null
     companion object {
         public lateinit var instance: LaserTagged
     }
@@ -30,6 +35,7 @@ class LaserTagged : JavaPlugin() {
         } catch (e: SQLException) {
             e.printStackTrace()
         }
+        arenaManager = ArenaManager()
         enableListeners()
         enableCommands()
         enableFeatures()
@@ -38,6 +44,8 @@ class LaserTagged : JavaPlugin() {
     private fun enableListeners() {
         ConnectionListener()
         GunShootEvent()
+        DeathEvent()
+        MoveEvent()
     }
 
     private fun enableFeatures() {
@@ -47,12 +55,12 @@ class LaserTagged : JavaPlugin() {
 
     private fun enableCommands() {
         getCommand("testing")?.setExecutor(TestingCommand())
+        getCommand("changer")?.setExecutor(ChangerCommand())
     }
 
     override fun onDisable() {
         logger.info("LaserTagged has been disabled")
         server.onlinePlayers.forEach() {
-
             databaseManager?.addPlayerData(it)
             databaseManager?.playerDataCached?.remove(it)
             boards[it.uniqueId]?.delete()

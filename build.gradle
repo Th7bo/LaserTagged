@@ -21,6 +21,50 @@ repositories {
     maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        url = 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        url = 'https://oss.sonatype.org/content/repositories/central'
+    }
+    maven {
+        url = 'https://repo.codemc.io/repository/maven-snapshots/'
+    }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        url 'https://repo.skriptlang.org/releases'
+    }
+    maven {
+        name = "CodeMC"
+        url = uri("https://repo.codemc.io/repository/maven-public/")
+    }
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+
+    maven {
+        name = 'papermc'
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    mavenCentral()
+    maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
 }
 
 tasks {
@@ -40,6 +84,7 @@ shadowJar {
         include(dependency("fr.mrmicky:fastboard:2.0.0"))
     }
     relocate 'fr.mrmicky.fastboard', 'com.th7bo.lasertagged.fastboard'
+    relocate("de.tr7zw.changeme.nbtapi", "com.th7bo.lasertagged.nbtapi")
 }
 
 dependencies {
@@ -55,6 +100,17 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
     implementation 'fr.mrmicky:fastboard:2.0.0'
     compileOnly 'me.clip:placeholderapi:2.11.3'
+    implementation "de.tr7zw:item-nbt-api:2.11.3"
+
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core") {
+        targetConfiguration = "runtime"
+    }
+
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") {
+        targetConfiguration = "runtime"
+        transitive = false
+    }
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.34"))
 
 }
 

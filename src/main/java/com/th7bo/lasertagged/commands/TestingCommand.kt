@@ -4,6 +4,7 @@ import com.th7bo.lasertagged.LaserTagged
 import com.th7bo.lasertagged.utils.Misc
 import com.th7bo.lasertagged.utils.color
 import com.th7bo.lasertagged.utils.playerData
+import com.th7bo.lasertagged.utils.sendColored
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -43,16 +44,16 @@ class TestingCommand : CommandExecutor, TabExecutor {
 
         val player = sender as Player
         if(!player.isOp) {
-            sender.sendMessage("You must be an operator to run this command")
+            sender.sendColored("&#f53b22ERROR &#f25f4bYou must be an operator to run this command")
             return true
         }
         val target = player.server.getPlayer(args?.get(0)!!)
         if(target == null) {
-            sender.sendMessage("Player not found")
+            sender.sendColored("&#f53b22ERROR &#f25f4bPlayer not found")
             return true
         }
         if(args.size < 3) {
-            sender.sendMessage("You must specify a player, a stat and a value")
+            sender.sendColored("&#f53b22ERROR &#f25f4bYou must specify a player, a stat and a value")
             return true
         }
         val playerData = target.playerData()
@@ -72,18 +73,18 @@ class TestingCommand : CommandExecutor, TabExecutor {
                 "accuracy" -> playerData.accuracy = args[2].toDouble()
                 "weapons" -> playerData.weapons = args[2].split(",").toTypedArray().toCollection(ArrayList())
                 else -> {
-                    sender.sendMessage("Invalid stat")
+                    sender.sendColored("&#f53b22ERROR &#f25f4bInvalid stat")
                     return true
                 }
             }
         } catch (e: NumberFormatException) {
-            sender.sendMessage("Invalid value for " + args[2])
+            sender.sendColored("&#f53b22ERROR &#f25f4bInvalid value for " + args[2])
             return true
         }
         val name = target.name
         val arg = args[1]
         val value = args[2]
-        "&aSet $arg &#FF0000to $value for $name".color()?.let { sender.sendMessage(it) }
+        sender.sendColored("&aSet $arg &#FF0000to $value for $name")
 
         return true
     }
