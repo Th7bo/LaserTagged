@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.util.RayTraceResult
 import org.bukkit.util.Vector
@@ -17,8 +19,13 @@ import org.bukkit.util.Vector
 
 class GunShootEvent : Listener {
 
+    val item = ItemStack(Material.CARROT_ON_A_STICK)
+    private val meta: ItemMeta = item.itemMeta
+
     init {
         LaserTagged.instance.server.pluginManager.registerEvents(this, LaserTagged.instance)
+        meta.setCustomModelData(6121198)
+        item.itemMeta = meta
     }
 
     @EventHandler
@@ -29,6 +36,8 @@ class GunShootEvent : Listener {
             if (event.player.inventory.itemInMainHand.type == Material.AIR) return
             if (LaserTagged.instance.arenaManager?.currentArena == null) return
             if (LaserTagged.instance.arenaManager?.currentArena?.isPlayerSafe(event.player) == true) return
+            if (event.player.inventory.itemInMainHand == item) return
+            if (event.isCancelled) return
             // do other checks
             val world: World = event.player.world
             val location: Location = event.player.eyeLocation

@@ -2,9 +2,11 @@ package com.th7bo.lasertagged
 
 import com.th7bo.lasertagged.arenas.ArenaManager
 import com.th7bo.lasertagged.commands.ChangerCommand
+import com.th7bo.lasertagged.commands.GrenadeCommand
 import com.th7bo.lasertagged.commands.TestingCommand
 import com.th7bo.lasertagged.database.DatabaseManager
 import com.th7bo.lasertagged.listeners.DeathEvent
+import com.th7bo.lasertagged.listeners.GrenadeThrowEvent
 import com.th7bo.lasertagged.listeners.GunShootEvent
 import com.th7bo.lasertagged.listeners.MoveEvent
 import com.th7bo.lasertagged.player.ConnectionListener
@@ -16,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.sql.SQLException
 import java.util.*
 import com.th7bo.lasertagged.utils.playerData
+import org.bukkit.Bukkit
 
 
 class LaserTagged : JavaPlugin() {
@@ -46,6 +49,7 @@ class LaserTagged : JavaPlugin() {
         GunShootEvent()
         DeathEvent()
         MoveEvent()
+        GrenadeThrowEvent()
     }
 
     private fun enableFeatures() {
@@ -56,6 +60,7 @@ class LaserTagged : JavaPlugin() {
     private fun enableCommands() {
         getCommand("testing")?.setExecutor(TestingCommand())
         getCommand("changer")?.setExecutor(ChangerCommand())
+        getCommand("getfb")?.setExecutor(GrenadeCommand())
     }
 
     override fun onDisable() {

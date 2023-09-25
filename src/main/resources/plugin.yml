@@ -10,3 +10,6 @@ commands:
   changer:
     description: Change the game mode
     usage: /<command>
+  getfb:
+    description: Get a flashbang
+    usage: /<command>

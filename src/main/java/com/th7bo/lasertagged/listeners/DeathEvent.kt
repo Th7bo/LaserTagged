@@ -2,14 +2,21 @@ package com.th7bo.lasertagged.listeners
 
 import com.th7bo.lasertagged.LaserTagged
 import com.th7bo.lasertagged.utils.color
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder.component
+import net.kyori.adventure.title.Title
+import net.kyori.adventure.title.TitlePart
+import net.md_5.bungee.api.chat.BaseComponent
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerRespawnEvent
+import java.time.Duration
+
 
 class DeathEvent : Listener {
 
@@ -49,6 +56,10 @@ class DeathEvent : Listener {
             player.setMetadata("safezone", org.bukkit.metadata.FixedMetadataValue(LaserTagged.instance, true))
         }
         event.deathMessage(Component.text(""))
+        val tit: Component = Component.text("\uD835\uDDB8\uD835\uDDAE\uD835\uDDB4 \uD835\uDDA3\uD835\uDDA8\uD835\uDDA4\uD835\uDDA3").color(TextColor.color(181, 27, 16))
+        val subtitle: Component = Component.text("Ｃ").color(TextColor.color(0,0,0))
+        val title = Title.title(tit, subtitle, Title.Times.times(Duration.ofMillis(250L), Duration.ofSeconds(5L), Duration.ofMillis(250L)))
+        player.showTitle(title)
     }
 
     @EventHandler
