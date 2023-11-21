@@ -13,18 +13,17 @@ import com.sk89q.worldedit.function.operation.Operation
 import com.sk89q.worldedit.function.operation.Operations
 import com.sk89q.worldedit.function.pattern.Pattern
 import com.sk89q.worldedit.math.BlockVector3
+import com.sk89q.worldedit.math.transform.AffineTransform
 import com.sk89q.worldedit.regions.CuboidRegion
 import com.sk89q.worldedit.regions.Region
 import com.sk89q.worldedit.session.ClipboardHolder
 import com.sk89q.worldedit.world.World
 import com.th7bo.lasertagged.LaserTagged
 import com.th7bo.lasertagged.utils.Misc
-import com.th7bo.lasertagged.utils.color
 import com.th7bo.lasertagged.utils.playerData
 import com.th7bo.lasertagged.utils.sendColored
 import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.metadata.FixedMetadataValue
 import org.bukkit.util.Vector
 import java.io.File
@@ -109,6 +108,8 @@ class ArenaManager {
         )
 
         val blockVector3: BlockVector3 = BlockVector3.at(location.blockX, location.blockY, location.blockZ)
+        val vector: Vector = Vector(0, 0, 0)
+        vector.
 
         if (clipboardFormat != null) {
             var operation: Operation? = null
@@ -118,7 +119,10 @@ class ArenaManager {
                     val world: World = FaweAPI.getWorld("world")
                     val editSession: EditSession = WorldEdit.getInstance().newEditSessionBuilder().world(world).build()
                     clipboard = clipboardReader.read()
-                    operation = ClipboardHolder(clipboard)
+                    val holder = ClipboardHolder(clipboard)
+                    holder.setTransform(AffineTransform().rotateY(90.0))
+
+                    operation = holder
                         .createPaste(editSession)
                         .to(blockVector3)
                         .ignoreAirBlocks(true)

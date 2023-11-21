@@ -33,18 +33,22 @@ class GunShootEvent : Listener {
         println("Player ${event.player.name} shot a gun")
         println("Action: ${event.action}")
         if (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK) {
+            println("a")
             if (event.player.inventory.itemInMainHand.type == Material.AIR) return
+            println("b")
             if (LaserTagged.instance.arenaManager?.currentArena == null) return
+            println("c")
             if (LaserTagged.instance.arenaManager?.currentArena?.isPlayerSafe(event.player) == true) return
+            println("d")
             if (event.player.inventory.itemInMainHand == item) return
-            if (event.isCancelled) return
+            println("e")
             // do other checks
             val world: World = event.player.world
             val location: Location = event.player.eyeLocation
             val direction: Vector = location.getDirection()
             val rayTraceResult: RayTraceResult? = event.player.world.rayTrace(
                 event.player.eyeLocation, direction, 100.0,
-                FluidCollisionMode.NEVER, false, 0.0
+                FluidCollisionMode.NEVER, false, 0.5
             ) { entity -> entity !== event.player && entity is Player && canHitPlayer(event.player, entity) }
             event.player.playerData()?.shots = event.player.playerData()?.shots!! + 1
             var hits = event.player.playerData()?.hits
